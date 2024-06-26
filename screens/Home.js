@@ -3,8 +3,14 @@ import React from 'react'
 import Ionicons from "react-native-vector-icons/Ionicons";
 import HomeOptions from '../components/HomeOptions';
 import Header from '../components/Header';
+import {BarChart, Grid, YAxis, XAxis} from 'react-native-svg-charts';
+
+
 
 export default Home = ({ navigation }) => {
+
+
+
   return (
     <View style={{ flex: 1 }}>
       <StatusBar translucent={true} backgroundColor="transparent" barStyle="light-content" />

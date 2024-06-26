@@ -7,6 +7,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import Svg, { Rect, Text as SvgText } from 'react-native-svg';
 import AuthService from '../AuthService';
 import { BarChart } from 'react-native-chart-kit';
+import { LineChart } from 'react-native-chart-kit';
 import { useFocusEffect } from '@react-navigation/native';
 const OPTION1 = "OPTION1";
 const OPTION2 = "OPTION2";
@@ -93,10 +94,90 @@ const MainComponent = ({
   );
 };
 
+const screenWidth = Dimensions.get('window').width;
+
+
 const Option1Component = () => {
+  const [allYear, setAllYear] = useState([]);
+  const [loading, setLoading] = useState(true); // Trạng thái để theo dõi trạng thái loading
+  const screenWidth = Dimensions.get('window').width;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userID = await AuthService.getUserID();
+        if (userID) {
+          const response = await api.get(`/api/assignment/lecturer/${userID}`);
+          const data = response.data.data;
+          setAllYear(data);
+          setLoading(false); // Khi dữ liệu được fetch xong, set loading về false
+        }
+      } catch (error) {
+        console.error('Lỗi khi fetch dữ liệu:', error);
+        setLoading(false); // Xử lý lỗi và set loading về false
+      }
+    };
+
+    fetchData(); // Fetch dữ liệu khi component được mount
+  }, []);
+
+  if (loading) {
+    return (
+      <View>
+        {/* Hiển thị indicator loading hoặc placeholder */}
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  // Gộp nhóm và tính tổng giá trị theo label 'time'
+  const groupedData = allYear.reduce((acc, current) => {
+    const existingItem = acc.find(item => item.time === current.time);
+    if (existingItem) {
+      existingItem.exactTime += current.exactTime; // Cộng giá trị 'exactTime' lại nếu label trùng nhau
+    } else {
+      
+      acc.push({ ...current }); // Thêm label mới vào mảng kết quả
+    }
+    return acc;
+  }, []);
+
+  // Chuẩn bị dữ liệu cho biểu đồ
+  const chartData = {
+    labels: groupedData.map(item => item.time), // Lấy các nhãn từ trường 'time'
+    datasets: [
+      {
+        data: groupedData.map(item => item.exactTime), // Lấy dữ liệu 'exactTime' để vẽ biểu đồ
+        color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // Màu của đường line
+        strokeWidth: 2, // Độ dày của đường line
+      },
+    ],
+  };
+
   return (
     <View>
-      <Text>Option1</Text>
+      <LineChart
+        data={chartData}
+        width={screenWidth} // Chiều rộng của biểu đồ là toàn bộ màn hình
+        height={220}
+        yAxisLabel={'$'}
+        chartConfig={{
+          backgroundColor: '#ffffff',
+          backgroundGradientFrom: '#ffffff',
+          backgroundGradientTo: '#ffffff',
+          decimalPlaces: 2,
+          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+          labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+          style: {
+            borderRadius: 16,
+          },
+        }}
+        bezier
+        style={{
+          marginVertical: 8,
+          borderRadius: 16,
+        }}
+      />
     </View>
   );
 };
@@ -190,6 +271,12 @@ const Option2Component = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f0f0f0',
+  },
   nav: {
     width: "100%",
     height: 50,
