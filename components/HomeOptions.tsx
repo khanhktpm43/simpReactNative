@@ -145,7 +145,7 @@ const Option2Component = () => {
 
     <View>
 
-      {/* <RNPickerSelect
+      <RNPickerSelect
         onValueChange={(value) => {
           const lecturerObj = { id: userID };
           const yearObj = { id: value };
@@ -183,7 +183,7 @@ const Option2Component = () => {
           }
         }}
         verticalLabelRotation={0}
-      /> */}
+      /> 
     </View>
 
   );
