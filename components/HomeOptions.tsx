@@ -44,7 +44,7 @@ const MainComponent = ({
               page === OPTION1 ? styles.activeText : null,
             ]}
           >
-            Một năm
+            Tất cả
           </Text>
           {page === OPTION1 ? (
             <View
@@ -72,7 +72,7 @@ const MainComponent = ({
               page === OPTION2 ? styles.activeText : null,
             ]}
           >
-            Tất cả
+            Theo năm
           </Text>
           {page === OPTION2 ? (
             <View
@@ -159,24 +159,20 @@ const Option1Component = () => {
       <LineChart
         data={chartData}
         width={screenWidth} // Chiều rộng của biểu đồ là toàn bộ màn hình
-        height={220}
-        yAxisLabel={'$'}
+        height={650}
+       
+        yAxisSuffix=" giờ"
         chartConfig={{
           backgroundColor: '#ffffff',
           backgroundGradientFrom: '#ffffff',
           backgroundGradientTo: '#ffffff',
-          decimalPlaces: 2,
+          decimalPlaces: 0,
           color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
           labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-          style: {
-            borderRadius: 16,
-          },
+
         }}
         bezier
-        style={{
-          marginVertical: 8,
-          borderRadius: 16,
-        }}
+       
       />
     </View>
   );
@@ -224,9 +220,10 @@ const Option2Component = () => {
   };
   return (
 
-    <View>
+    <View style={styles.container}>
 
       <RNPickerSelect
+    
         onValueChange={(value) => {
           const lecturerObj = { id: userID };
           const yearObj = { id: value };
@@ -242,15 +239,14 @@ const Option2Component = () => {
       <BarChart
         style={styles.chart}
         data={data}
-        width={Dimensions.get('window').width - 16}
-        height={220}
+        width={Dimensions.get('window').width }
+        height={550}
         yAxisLabel=""
-        yAxisSuffix="giờ"
+        yAxisSuffix=" giờ"
         chartConfig={{
-          backgroundColor: "#1cc910",
-
-          backgroundGradientFrom: "#eff3ff",
-          backgroundGradientTo: "#efefef",
+          backgroundColor: '#ffffff',
+          backgroundGradientFrom: '#ffffff',
+          backgroundGradientTo: '#ffffff',
           decimalPlaces: 0, // Số thập phân
           color: (opacity = 1) => `rgba(0, 0, 128, 1)`,
           labelColor: (opacity = 1) => `rgba(0, 0, 0, 1)`,
@@ -272,10 +268,10 @@ const Option2Component = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f0f0f0',
+    // flex: 1,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    backgroundColor: '#ffffff',
   },
   nav: {
     width: "100%",

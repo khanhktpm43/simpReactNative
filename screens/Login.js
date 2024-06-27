@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TextInput, StatusBar, TouchableOpacity, TouchableWithoutFeedback, Keyboard, ToastAndroid } from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, StatusBar, TouchableOpacity, TouchableWithoutFeedback, Keyboard, ToastAndroid , Alert} from 'react-native';
 import React, { useState, useEffect } from 'react'
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import FontAwesome6Icon from "react-native-vector-icons/FontAwesome6";
@@ -58,6 +58,15 @@ const Login = () => {
 
                 // Ví dụ: lưu token vào AsyncStorage và điều hướng đến màn hình chính
                 navigation.replace('HomeDrawer');
+            }else{
+                Alert.alert(
+                    'Đăng nhập không thành công',
+                    'Vui lòng kiểm tra lại thông tin đăng nhập của bạn.',
+                    [
+                      { text: 'OK', onPress: () => console.log('OK Pressed') }
+                    ],
+                    { cancelable: false }
+                  );
             }
 
         } catch (error) {

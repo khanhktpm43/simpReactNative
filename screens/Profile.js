@@ -45,26 +45,28 @@ const Profile = ({ navigation }) => {
             return;
         }
         try {
-            const response = await api.post('http://192.168.1.8:8080/api/users/update', {
+            const response = await api.post('http://192.168.1.7:8080/api/users/update', {
                 pass: currentPassword,
                 newPass: newPassword,
                 rePass: confirmPassword
             });
 
             if (response.data.status == "ok" ) {
-                ToastAndroid.show('Đổi mật khẩu thành công', ToastAndroid.SHORT);
+                Alert.alert('Thành công', 'bạn đã đổi mật khẩu thành công');
+                // ToastAndroid.show('Đổi mật khẩu thành công', ToastAndroid.SHORT);
                 setCurrentPassword('');
         setNewPassword('');
         setConfirmPassword('');
             }else{
-                ToastAndroid.show(response.data.message, ToastAndroid.SHORT);
+                Alert.alert('Không thành công');
+                // ToastAndroid.show(response.data.message, ToastAndroid.SHORT);
             }
 
         } catch (error) {
             // Xử lý lỗi khi gọi API
-          
+            Alert.alert('Không thành công',"Mật khẩu không chính xác");
             // Hiển thị thông báo lỗi cho người dùng
-            ToastAndroid.show('Mật khẩu không đúng', ToastAndroid.SHORT);
+            // ToastAndroid.show('Mật khẩu không đúng', ToastAndroid.SHORT);
         }
    
     };
